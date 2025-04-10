@@ -1,0 +1,840 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 255, 253, 247;
+  --background-end-rgb: 255, 253, 247;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-start-rgb));
+  direction: rtl;
+  overflow-x: hidden;
+}
+
+/* Glass Effect */
+.glass-gold {
+  background: rgba(255, 224, 114, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 224, 114, 0.2);
+}
+
+.glass-dollar {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 224, 114, 0.2);
+}
+
+/* Gold Bar Effects */
+.gold-bar-3d {
+  position: relative;
+  overflow: hidden;
+}
+
+.gold-bar-3d::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    45deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 45%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0.2) 55%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  animation: shine 2s infinite;
+}
+
+/* Animated Background */
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Light Effect */
+.light-effect {
+  background: radial-gradient(
+    circle at var(--x, 50%) var(--y, 50%),
+    rgba(255, 215, 0, 0.15) 0%,
+    transparent 50%
+  );
+  transition: background 0.2s ease;
+}
+
+/* Sparkle Animation */
+.sparkle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  filter: blur(1px);
+  animation: sparkle var(--delay, 2s) ease-in-out infinite;
+}
+
+.sparkle::before,
+.sparkle::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: inherit;
+  border-radius: inherit;
+  animation: inherit;
+}
+
+.sparkle::before {
+  transform: rotate(45deg);
+}
+
+.sparkle::after {
+  transform: rotate(-45deg);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #FFE072;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #FFD84D;
+}
+
+/* Responsive Typography */
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+/* Font Settings */
+@layer base {
+  html {
+    font-family: Vazirmatn, system-ui, sans-serif;
+  }
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.floating {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes scale {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.scale-pulse {
+  animation: scale 4s ease-in-out infinite;
+}
+
+/* Gold Gradient */
+.gold-gradient {
+  background: linear-gradient(90deg, #FFE072 0%, #FFD84D 100%);
+}
+
+/* Hero Image Container */
+.hero-image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 24px;
+}
+
+.hero-image {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  max-width: 400px;
+  height: auto;
+}
+
+/* Hero Section Animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.floating {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes particle {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) scale(0);
+    opacity: 0;
+  }
+}
+
+.particle {
+  pointer-events: none;
+}
+
+@keyframes shine {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.animate-shine {
+  animation: shine 3s linear infinite;
+  background-size: 200% 100%;
+}
+
+/* Gold Bar Hover Effects */
+.gold-bar {
+  transition: transform 0.3s ease;
+}
+
+.gold-bar:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .gold-bar {
+    transform: scale(0.8);
+  }
+}
+
+/* 3D Effects */
+.gold-bar div {
+  position: relative;
+}
+
+.gold-bar div::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom right,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.1),
+    rgba(0, 0, 0, 0.1)
+  );
+  border-radius: inherit;
+}
+
+/* Enhanced 3D Gold Effects */
+@keyframes goldShimmer {
+  0% {
+    background-position: -200% center;
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.2);
+  }
+  100% {
+    background-position: 200% center;
+    filter: brightness(1);
+  }
+}
+
+.gold-shimmer {
+  background: linear-gradient(
+    90deg,
+    #FFD700 0%,
+    #FDB931 25%,
+    #FFE072 50%,
+    #FDB931 75%,
+    #FFD700 100%
+  );
+  background-size: 200% auto;
+  animation: goldShimmer 5s linear infinite;
+}
+
+/* Enhanced Particle Effects */
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(180deg);
+  }
+}
+
+.sparkle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  filter: blur(1px);
+}
+
+.sparkle::before,
+.sparkle::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: inherit;
+  border-radius: inherit;
+}
+
+.sparkle::before {
+  transform: rotate(45deg);
+}
+
+.sparkle::after {
+  transform: rotate(-45deg);
+}
+
+/* Enhanced Floating Animation */
+@keyframes floatWithRotate {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    filter: brightness(1);
+  }
+  25% {
+    transform: translateY(-10px) rotate(2deg);
+    filter: brightness(1.1);
+  }
+  50% {
+    transform: translateY(-20px) rotate(0deg);
+    filter: brightness(1.2);
+  }
+  75% {
+    transform: translateY(-10px) rotate(-2deg);
+    filter: brightness(1.1);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+    filter: brightness(1);
+  }
+}
+
+.floating {
+  animation: floatWithRotate 4s ease-in-out infinite;
+}
+
+/* Enhanced Gold Bar Effects */
+.gold-bar {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.gold-bar:hover {
+  transform: scale(1.1) rotate(5deg) translateY(-5px);
+  filter: brightness(1.2);
+  box-shadow: 
+    0 20px 25px -5px rgba(253, 185, 49, 0.2),
+    0 10px 10px -5px rgba(253, 185, 49, 0.1);
+}
+
+.gold-bar div {
+  background: linear-gradient(
+    135deg,
+    #FFD700 0%,
+    #FDB931 50%,
+    #FFE072 100%
+  );
+  position: relative;
+  overflow: hidden;
+}
+
+.gold-bar div::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transform: skewX(-25deg);
+  animation: shine 2s infinite;
+}
+
+/* Enhanced Stack Animation */
+@keyframes stackFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(var(--rotation));
+  }
+  50% {
+    transform: translateY(-5px) rotate(calc(var(--rotation) * 0.5));
+  }
+}
+
+.stacked-bar {
+  --rotation: 0deg;
+  animation: stackFloat 3s ease-in-out infinite;
+  filter: drop-shadow(0 10px 8px rgba(253, 185, 49, 0.1));
+}
+
+.stacked-bar:hover {
+  --rotation: 0deg;
+  filter: drop-shadow(0 20px 13px rgba(253, 185, 49, 0.15));
+}
+
+/* Enhanced Background Effect */
+.hero-bg {
+  background: linear-gradient(
+    135deg,
+    #FFE072 0%,
+    #FFD700 50%,
+    #FDB931 100%
+  );
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54.627 0l.83.828-1.415 1.415L51.8 0h2.827zM5.373 0l-.83.828L5.96 2.243 8.2 0H5.374zM48.97 0l3.657 3.657-1.414 1.414L46.143 0h2.828zM11.03 0L7.372 3.657 8.787 5.07 13.857 0H11.03zm32.284 0L49.8 6.485 48.384 7.9l-7.9-7.9h2.83zM16.686 0L10.2 6.485 11.616 7.9l7.9-7.9h-2.83zM22.343 0L13.8 8.544 15.214 9.96l9.9-9.9h-2.77zM32 0l-3.657 3.657 1.414 1.414L32 2.828l2.243 2.243 1.414-1.414L32 0zm13.657 0L32 13.657 33.414 15.07 47.07 1.414 45.657 0h-2.83zM0 5.373l.828-.83L2.243 5.96 0 8.2V5.374zm0 5.656l.828-.829 5.657 5.657-1.414 1.414L0 11.03v-2.83zm0 5.657l.828-.828 8.485 8.485-1.414 1.414L0 16.687v-2.83zm0 5.657l.828-.828 11.314 11.314-1.414 1.414L0 22.343v-2.83zM0 32l3.657-3.657 1.414 1.414L2.828 32l2.243 2.243-1.414 1.414L0 32zm0 13.657L13.657 32 15.07 33.414 1.414 47.07.828 46.485 0 45.657v-2.83zm0 5.657L19.314 32l1.414 1.414-18.485 18.485-.828-.828L0 51.313v-2.83zm0 5.657L24.97 32l1.415 1.414-23.142 23.142-.828-.828L0 56.97v-2.83zm5.373 5.373L32 24.97l1.414 1.415L9.957 49.84l-.828-.83L8.2 60H5.374zm5.657 0L32 19.314l1.414 1.414L13.614 44.485 11.03 60H8.2zm5.657 0L32 13.657 33.414 15.07 18.272 39.142 16.686 60h-2.83zm5.657 0L32 8l1.414 1.414-13.85 33.728L22.343 60h-2.83zm5.657 0L32 2.343 33.414 3.757 27.7 28.456 28.03 60h-2.83zm5.657 0L32-3.314 33.414-1.9 32.57 23.114 33.657 60h-2.83zm5.657 0L32-8.97 33.414-7.556 37.443 17.77 39.314 60h-2.83zm5.657 0L32-14.627 33.414-13.213 42.285 12.428 44.97 60h-2.83zm5.657 0L32-20.284 33.414-18.87 47.128 7.084 50.627 60h-2.83zm5.657 0L32-25.94 33.414-24.526 51.97 1.742 56.284 60h-2.83z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+  opacity: 0.5;
+  animation: backgroundShift 30s linear infinite;
+}
+
+@keyframes backgroundShift {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 60px 60px;
+  }
+}
+
+/* Professional 3D Gold Bar Animation */
+@keyframes float3D {
+  0% {
+    transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0);
+    filter: brightness(1);
+  }
+  25% {
+    transform: perspective(1000px) rotateX(5deg) rotateY(5deg) translateZ(20px);
+    filter: brightness(1.2);
+  }
+  50% {
+    transform: perspective(1000px) rotateX(-2deg) rotateY(8deg) translateZ(30px);
+    filter: brightness(1.4);
+  }
+  75% {
+    transform: perspective(1000px) rotateX(5deg) rotateY(-5deg) translateZ(20px);
+    filter: brightness(1.2);
+  }
+  100% {
+    transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0);
+    filter: brightness(1);
+  }
+}
+
+.gold-stack {
+  transform-style: preserve-3d;
+  animation: float3D 8s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Enhanced Gold Bar Styles */
+.gold-bar-3d {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gold-bar-3d::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    45deg,
+    rgba(255, 215, 0, 0.5),
+    rgba(253, 185, 49, 0.8)
+  );
+  filter: blur(8px);
+  transform: translateZ(-10px);
+  opacity: 0.6;
+}
+
+.gold-bar-3d::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transform: translateZ(2px);
+  animation: shimmer3D 2s linear infinite;
+}
+
+@keyframes shimmer3D {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%) translateZ(2px);
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100%) translateZ(2px);
+  }
+}
+
+/* Dynamic Light Effects */
+.light-effect {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at var(--x, 50%) var(--y, 50%),
+    rgba(255, 255, 255, 0.2) 0%,
+    transparent 60%
+  );
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* Enhanced Background Animation */
+.animated-bg {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    #FFE072 0%,
+    #FFD700 25%,
+    #FDB931 50%,
+    #FFD700 75%,
+    #FFE072 100%
+  );
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animated-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+  opacity: 0.3;
+  animation: patternMove 20s linear infinite;
+}
+
+@keyframes patternMove {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100px 100px;
+  }
+}
+
+/* Enhanced 3D Gold Effects */
+.animated-bg {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+  position: relative;
+}
+
+.light-effect {
+  background: radial-gradient(
+    800px circle at var(--x, 50%) var(--y, 50%),
+    rgba(255, 215, 0, 0.15),
+    transparent 40%
+  );
+  transition: background-position 0.3s;
+}
+
+.gold-stack-container {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.gold-bar-3d {
+  position: relative;
+  background: linear-gradient(to right, #FFD700, #FDB931);
+  border-radius: 8px;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.gold-bar-3d::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    45deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 45%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.2) 55%,
+    transparent 100%
+  );
+  animation: shimmer 2s infinite;
+  transform: translateZ(1px);
+}
+
+.gold-bar-3d::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  border-radius: inherit;
+  transform: translateZ(2px);
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.sparkle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  opacity: 0;
+  animation: sparkleAnim 3s linear infinite;
+  animation-delay: var(--delay);
+  top: var(--top);
+  left: var(--left);
+}
+
+@keyframes sparkleAnim {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1) rotate(180deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(0) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.pattern-overlay {
+  background-image: linear-gradient(45deg, rgba(255, 215, 0, 0.1) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(255, 215, 0, 0.1) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(255, 215, 0, 0.1) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(255, 215, 0, 0.1) 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+  animation: patternMove 20s linear infinite;
+  opacity: 0.1;
+}
+
+@keyframes patternMove {
+  0% {
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+  }
+  100% {
+    background-position: 40px 40px, 40px 50px, 50px 30px, 30px 40px;
+  }
+}
+
+.text-shadow-gold {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3),
+               0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .gold-bar-3d {
+    transform: scale(0.8);
+  }
+  
+  .light-effect {
+    background: radial-gradient(
+      400px circle at var(--x, 50%) var(--y, 50%),
+      rgba(255, 215, 0, 0.15),
+      transparent 40%
+    );
+  }
+}
+
+/* Additional styles for Hero component (added at the end of the file) */
+.bg-gradient-radial {
+  background-image: radial-gradient(var(--tw-gradient-stops));
+}
+
+.text-shadow-sm {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.text-shadow-gold {
+  text-shadow: 0 2px 4px rgba(217, 119, 6, 0.3);
+}
+
+/* Ensure all pattern backgrounds display properly */
+.bg-grid-pattern,
+.bg-noise-pattern {
+  background-repeat: repeat;
+  background-size: auto;
+}
+
+/* Ensure text color on gradients is visible */
+.bg-clip-text {
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Ensure motion divs align properly in RTL */
+[dir="rtl"] .gold-stack-container {
+  direction: ltr;
+}
+
+/* Fix for absolute positioning in RTL */
+.absolute.left-0 {
+  left: 0;
+  right: auto;
+}
+
+.absolute.right-0 {
+  right: 0;
+  left: auto;
+}
+
+/* Fix for transform in RTL */
+.transform.translate-x-1\/3 {
+  transform: translateX(33.333%);
+}
+
+.transform.-translate-x-1\/2 {
+  transform: translateX(-50%);
+}
+
+/* Force RTL for text containers */
+.text-right {
+  text-align: right;
+}
+
+/* Golden Clock Animation */
+@keyframes goldClockShine {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Clock to gold transformation keyframes */
+@keyframes clockToGold {
+  0% {
+    background-color: #8B4513;
+    border-radius: 50%;
+    transform: scale(1);
+  }
+  50% {
+    background-color: #B8860B;
+    border-radius: 25%;
+    transform: scale(0.9);
+  }
+  100% {
+    background-color: #FFD700;
+    border-radius: 5%;
+    transform: scale(0.8);
+  }
+}
+
+/* Gold bar shine effect */
+.gold-shine-effect {
+  overflow: hidden;
+  position: relative;
+}
+
+.gold-shine-effect::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transform: skewX(-25deg);
+  animation: goldClockShine 2s infinite;
+} 
