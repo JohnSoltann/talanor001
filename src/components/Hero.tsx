@@ -50,11 +50,7 @@ const Hero = () => {
   }, []);
   
   return (
-    <div dir="rtl" className="relative min-h-[90vh] w-full overflow-hidden bg-gradient-to-b from-gold-100/30 to-white">
-      {/* Animated background patterns */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-10" />
-      <div className="absolute inset-0 bg-noise-pattern opacity-5 mix-blend-overlay" />
-      
+    <div dir="rtl" className="relative min-h-[90vh] w-full overflow-hidden bg-gradient-to-b from-gold-500 via-gold-300 to-white">
       {/* Light effect */}
       <div id="lightEffect" className="absolute inset-0 light-effect" />
       <DynamicLight />
