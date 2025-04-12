@@ -21,16 +21,16 @@ export default function UserProfileButton() {
 
   if (status === 'unauthenticated') {
     return (
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-2 bg-white border border-gold-600 rounded-full p-2 shadow-md">
         <Link
           href="/login"
-          className="text-gold-600 hover:text-gold-800 font-medium"
+          className="bg-gold-600 hover:bg-gold-700 text-white px-4 py-2 rounded-lg font-medium transition-colors mr-2"
         >
           ورود
         </Link>
         <Link
           href="/register"
-          className="bg-gold-500 hover:bg-gold-600 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+          className="bg-gold-600 hover:bg-gold-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
         >
           ثبت نام
         </Link>

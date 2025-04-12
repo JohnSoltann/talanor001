@@ -18,10 +18,17 @@ export default function AdminAuthGuard({
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   
-  // رمز عبور ادمین
-  const ADMIN_PASSWORD = 'talajewelryadmin';
+  // رمز عبور ادمین از متغیر محیطی
+  const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD;
   
   useEffect(() => {
+    // بررسی وجود متغیر محیطی
+    if (!ADMIN_PASSWORD) {
+      console.error('متغیر محیطی NEXT_PUBLIC_ADMIN_PASSWORD تنظیم نشده است');
+      toast.error('خطا در تنظیمات سیستم');
+      return;
+    }
+    
     // بررسی لاگین بودن کاربر
     if (status === 'unauthenticated') {
       toast.error('لطفا ابتدا وارد حساب کاربری خود شوید');
