@@ -54,10 +54,14 @@ const GoldCalculator = () => {
   }, []);
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^0-9]/g, '');
-    setAmount(value);
-    if (value && currentPrice) {
-      const calculatedWeight = (parseInt(value) / currentPrice).toFixed(3);
+    const rawValue = e.target.value.replace(/[^0-9]/g, '');
+    
+    const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    
+    setAmount(formattedValue);
+    
+    if (rawValue && currentPrice) {
+      const calculatedWeight = (parseInt(rawValue) / currentPrice).toFixed(3);
       setWeight(calculatedWeight);
     } else {
       setWeight('');

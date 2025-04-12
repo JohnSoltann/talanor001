@@ -5,6 +5,10 @@
 @layer base {
   html {
     direction: rtl;
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #FFD700 0%, var(--gold-primary) 30%, var(--gold-light) 70%, white 100%);
+    background-attachment: fixed;
+    scroll-behavior: smooth;
   }
 
   :root {
@@ -27,8 +31,9 @@
   body {
     font-family: 'Vazirmatn', var(--font-inter), 'Tahoma', sans-serif;
     direction: rtl;
-    background: linear-gradient(135deg, var(--gold-ultra-light) 0%, #FFF9E5 50%, #FFFCEB 100%);
-    background-attachment: fixed;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
     color: var(--text-color);
   }
 

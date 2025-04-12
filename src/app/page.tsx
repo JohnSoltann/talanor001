@@ -13,7 +13,7 @@ export default function Home() {
       <Hero />
 
       {/* Gold Price Section */}
-      <section className="container mx-auto px-4 py-12">
+      <section id="gold-price" className="container mx-auto px-4 py-12">
         <div 
           className="glass-gold p-8 rounded-2xl shadow-lg"
         >
@@ -23,7 +23,7 @@ export default function Home() {
       </section>
 
       {/* Gold Calculator Section */}
-      <section className="container mx-auto px-4 py-8">
+      <section id="gold-calculator" className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-1 gap-8">
           <div className="lg:col-span-1">
             <GoldCalculator />

@@ -4,13 +4,10 @@
 
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 255, 253, 247;
-  --background-end-rgb: 255, 253, 247;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-start-rgb));
   direction: rtl;
   overflow-x: hidden;
 }

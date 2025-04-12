@@ -19,7 +19,7 @@ export default function AdminAuthGuard({
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   
   // رمز عبور ادمین از متغیر محیطی
-  const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD;
+  const ADMIN_PASSWORD = typeof window !== 'undefined' ? window.__NEXT_DATA__?.props?.env?.NEXT_PUBLIC_ADMIN_PASSWORD : process.env.NEXT_PUBLIC_ADMIN_PASSWORD;
   
   useEffect(() => {
     // بررسی وجود متغیر محیطی
@@ -60,7 +60,7 @@ export default function AdminAuthGuard({
       // نمایش فرم رمز عبور
       setShowPassPrompt(true);
     }
-  }, [status, session, router]);
+  }, [status, session, router, ADMIN_PASSWORD]);
   
   const handleAdminAuth = (e: React.FormEvent) => {
     e.preventDefault();

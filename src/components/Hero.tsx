@@ -6,9 +6,39 @@ import { useEffect, useState } from "react";
 import ClockWidget from './ClockWidget';
 import GoldenClockAnimation from './GoldenClockAnimation';
 
+// کامپوننت برای رندر فقط در سمت کلاینت
+const ClientOnlyParticles = () => {
+  const [mounted, setMounted] = useState(false);
+  const [particles, setParticles] = useState<React.CSSProperties[]>([]);
+
+  useEffect(() => {
+    setMounted(true);
+    const newParticles = Array.from({ length: 25 }).map(() => ({
+      top: `${Math.random() * 100}%`,
+      left: `${Math.random() * 100}%`,
+      animationDelay: `${Math.random() * 3}s`,
+      animationDuration: `${3 + Math.random() * 3}s`
+    }));
+    setParticles(newParticles);
+  }, []);
+
+  if (!mounted) return null;
+
+  return (
+    <div className="absolute inset-0 pointer-events-none">
+      {particles.map((style, i) => (
+        <div
+          key={i}
+          className="absolute h-1 w-1 rounded-full bg-gold-300 animate-float"
+          style={style}
+        />
+      ))}
+    </div>
+  );
+};
+
 const Hero = () => {
   const [scrollY, setScrollY] = useState(0);
-  const [animationStyle, setAnimationStyle] = useState<React.CSSProperties>({});
   
   useEffect(() => {
     const handleScroll = () => {
@@ -17,17 +47,6 @@ const Hero = () => {
     
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    // Generate random animation values only on client side
-    const style = {
-      top: `${Math.random() * 100}%`,
-      left: `${Math.random() * 100}%`,
-      animationDelay: `${Math.random() * 3}s`,
-      animationDuration: `${3 + Math.random() * 3}s`
-    };
-    setAnimationStyle(style);
   }, []);
   
   return (
@@ -41,15 +60,7 @@ const Hero = () => {
       <DynamicLight />
       
       {/* Floating particles */}
-      <div className="absolute inset-0 pointer-events-none">
-        {Array.from({ length: 25 }).map((_, i) => (
-          <div
-            key={i}
-            className="absolute h-1 w-1 rounded-full bg-gold-300 animate-float"
-            style={animationStyle}
-          />
-        ))}
-      </div>
+      <ClientOnlyParticles />
       
       {/* Main content */}
       <div className="container mx-auto px-4 py-12 md:py-24">
@@ -162,17 +173,7 @@ const Hero = () => {
       </div>
       
       {/* Sparkles */}
-      {Array.from({ length: 15 }).map((_, i) => (
-        <div
-          key={i}
-          className="sparkle absolute"
-          style={{
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-            animationDelay: `${Math.random() * 5}s`,
-          }}
-        />
-      ))}
+      <ClientOnlySparkles />
       
       {/* Decorative elements */}
       <div
@@ -188,6 +189,36 @@ const Hero = () => {
         }}
       />
     </div>
+  );
+};
+
+// کامپوننت برای رندر اسپارکل‌ها فقط در سمت کلاینت
+const ClientOnlySparkles = () => {
+  const [mounted, setMounted] = useState(false);
+  const [sparkles, setSparkles] = useState<React.CSSProperties[]>([]);
+
+  useEffect(() => {
+    setMounted(true);
+    const newSparkles = Array.from({ length: 15 }).map(() => ({
+      top: `${Math.random() * 100}%`,
+      left: `${Math.random() * 100}%`,
+      animationDelay: `${Math.random() * 5}s`,
+    }));
+    setSparkles(newSparkles);
+  }, []);
+
+  if (!mounted) return null;
+
+  return (
+    <>
+      {sparkles.map((style, i) => (
+        <div
+          key={i}
+          className="sparkle absolute"
+          style={style}
+        />
+      ))}
+    </>
   );
 };
 

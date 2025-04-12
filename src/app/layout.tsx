@@ -27,7 +27,7 @@ export default function RootLayout({
       <head>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap" />
       </head>
-      <body className={`${inter.className} bg-amber-50 font-vazirmatn`}>
+      <body className={`${inter.className} font-vazirmatn`}>
         <Providers>
           <Header />
           <main>

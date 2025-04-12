@@ -23,10 +23,10 @@ const Header = () => {
           
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-8">
-            <Link href="/gold-price" className="text-gray-700 hover:text-gold-600 transition-colors">
+            <Link href="/#gold-price" className="text-gray-700 hover:text-gold-600 transition-colors">
               قیمت طلا
             </Link>
-            <Link href="/calculator" className="text-gray-700 hover:text-gold-600 transition-colors">
+            <Link href="/#gold-calculator" className="text-gray-700 hover:text-gold-600 transition-colors">
               محاسبه قیمت طلا
             </Link>
             <Link href="/rules" className="text-gray-700 hover:text-gold-600 transition-colors">
@@ -76,10 +76,10 @@ const Header = () => {
         {isMenuOpen && (
           <div className="md:hidden mt-4 py-4 border-t border-gray-100">
             <div className="flex flex-col gap-4">
-              <Link href="/gold-price" className="text-gray-700 hover:text-gold-600 transition-colors">
+              <Link href="/#gold-price" className="text-gray-700 hover:text-gold-600 transition-colors">
                 قیمت طلا
               </Link>
-              <Link href="/calculator" className="text-gray-700 hover:text-gold-600 transition-colors">
+              <Link href="/#gold-calculator" className="text-gray-700 hover:text-gold-600 transition-colors">
                 محاسبه قیمت طلا
               </Link>
               <Link href="/rules" className="text-gray-700 hover:text-gold-600 transition-colors">
