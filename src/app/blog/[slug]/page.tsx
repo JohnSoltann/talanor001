@@ -18,7 +18,7 @@ const FALLBACK_POST: BlogPost = {
   category: 'market-analysis',
   date: '۲۵ فروردین ۱۴۰۳',
   author: 'تیم کارشناسان طلانوز',
-  imagePath: '/images/gold-hero.svg',
+  imagePath: '/uploads/blog/thumbnails/gold-hero.svg',
   featured: true,
   content: `
     <p>

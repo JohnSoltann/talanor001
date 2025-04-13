@@ -8,6 +8,7 @@ import Pagination from '@/components/Pagination';
 import BlogIcon from '@/components/BlogIcon';
 import { useBlogData } from '@/contexts/BlogDataContext';
 import { BlogPost } from '@/lib/types';
+import Image from 'next/image';
 
 export default function BlogPage({ 
   searchParams 
@@ -24,8 +25,28 @@ export default function BlogPage({
 
   // Process posts when they change
   useEffect(() => {
+    if (posts.length === 0) {
+      // Fallback post when no posts are available
+      const fallbackPost: BlogPost = {
+        id: 'fallback',
+        title: 'به وبلاگ طلا نور خوش آمدید',
+        description: 'به زودی مطالب جذابی در مورد بازار طلا و جواهر در اینجا منتشر خواهد شد.',
+        content: '',
+        slug: 'welcome',
+        category: 'عمومی',
+        imagePath: '/uploads/blog/thumbnails/gold-hero.svg',
+        featured: true,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      setFeaturedPost(fallbackPost);
+      setFilteredPosts([fallbackPost]);
+      setTotalPages(1);
+      return;
+    }
+
     // Find featured post
-    const featured = posts.find(post => post.featured) || (posts.length > 0 ? posts[0] : null);
+    const featured = posts.find(post => post.featured) || posts[0];
     setFeaturedPost(featured);
     
     // Paginate posts
@@ -57,14 +78,27 @@ export default function BlogPage({
     <main className="max-w-7xl mx-auto px-4 py-8">
       {/* Hero Section */}
       <section className="mb-16">
-        <div className="relative h-[500px] rounded-2xl overflow-hidden bg-gradient-to-r from-yellow-600 to-yellow-300">
-          <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-            <BlogIcon 
-              category={featuredPost.category} 
-              size={120} 
-              className="opacity-20"
+        <div className="relative h-[500px] rounded-2xl overflow-hidden">
+          {featuredPost.imagePath ? (
+            <Image
+              src={featuredPost.imagePath}
+              alt={featuredPost.title}
+              fill
+              className="object-cover"
+              priority
             />
-          </div>
+          ) : (
+            <div className="h-full bg-gradient-to-r from-yellow-600 to-yellow-300">
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                <BlogIcon 
+                  category={featuredPost.category} 
+                  size={120} 
+                  className="opacity-20"
+                />
+              </div>
+            </div>
+          )}
+          <div className="absolute inset-0 bg-black/40" />
           <div className="relative h-full flex items-center p-8 md:p-12 z-10">
             <div className="max-w-2xl">
               <div className="flex items-center gap-2 mb-4">

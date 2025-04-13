@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
 import { existsSync } from 'fs';
 import path from 'path';
+import multer from 'multer';
+import sharp from 'sharp';
+import fs from 'fs';
+import { v4 as uuidv4 } from 'uuid';
 
 // تابعی برای بررسی اینکه محتوا SVG است یا نه
 function isSvgContent(buffer: Buffer): boolean {
@@ -23,66 +27,85 @@ function detectFileType(buffer: Buffer, originalExtension: string): string {
   return originalExtension;
 }
 
-export async function POST(req: NextRequest) {
+// ایجاد پوشه‌ها اگر وجود ندارند
+const ensureDirectoryExists = (directory: string) => {
+  if (!fs.existsSync(directory)) {
+    fs.mkdirSync(directory, { recursive: true });
+  }
+};
+
+const UPLOAD_DIRS = {
+  thumbnail: path.join(process.cwd(), 'public', 'uploads', 'blog', 'thumbnails'),
+  content: path.join(process.cwd(), 'public', 'uploads', 'blog', 'content')
+};
+
+Object.values(UPLOAD_DIRS).forEach(ensureDirectoryExists);
+
+export async function POST(req: Request) {
   try {
+    // استخراج داده‌ها از FormData
     const formData = await req.formData();
     const file = formData.get('file') as File;
+    const uploadType = formData.get('uploadType') as 'thumbnail' | 'content' || 'content';
     
     if (!file) {
       return NextResponse.json(
-        { error: 'No file provided' },
+        { success: false, error: 'فایلی ارسال نشده است' }, 
         { status: 400 }
       );
     }
-
-    // Get the file extension
-    const originalExtension = file.name.split('.').pop()?.toLowerCase() || '';
-    const buffer = Buffer.from(await file.arrayBuffer());
     
-    // تشخیص نوع واقعی فایل
-    const detectedExtension = detectFileType(buffer, originalExtension);
-    
-    // لیست پسوندهای تصویری معتبر
-    const validExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'];
-    
-    if (!validExtensions.includes(detectedExtension)) {
+    // بررسی نوع فایل
+    if (!file.type.startsWith('image/')) {
       return NextResponse.json(
-        { error: 'Invalid file type. Only image files are allowed.' },
+        { success: false, error: 'فقط فایل‌های تصویری مجاز هستند' },
         { status: 400 }
       );
     }
-
-    // نام فایل با پسوند صحیح
-    const timestamp = Date.now();
-    const baseFilename = file.name.replace(/\.\w+$/, '').replace(/\s+/g, '-');
-    const filename = `${timestamp}-${baseFilename}.${detectedExtension}`;
     
-    // Define directory paths
-    const blogDirPath = path.join(process.cwd(), 'public', 'images', 'blog');
+    // تبدیل File به Buffer
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
     
-    // Ensure directories exist
-    if (!existsSync(blogDirPath)) {
-      await mkdir(blogDirPath, { recursive: true });
+    // ایجاد نام فایل منحصر به فرد
+    const uniqueId = uuidv4();
+    const fileExtension = path.extname(file.name).toLowerCase() || '.jpg';
+    const filename = `${uniqueId}${fileExtension}`;
+    
+    // مسیر ذخیره‌سازی
+    const uploadDir = UPLOAD_DIRS[uploadType];
+    const filePath = path.join(uploadDir, filename);
+    
+    // بهینه‌سازی و ذخیره تصویر با Sharp
+    let sharpInstance = sharp(buffer);
+    
+    // تنظیمات بهینه‌سازی براساس نوع آپلود
+    if (uploadType === 'thumbnail') {
+      sharpInstance = sharpInstance
+        .resize(800, 450, { fit: 'inside', withoutEnlargement: true })
+        .jpeg({ quality: 80, progressive: true });
+    } else {
+      sharpInstance = sharpInstance
+        .resize(1200, null, { fit: 'inside', withoutEnlargement: true })
+        .jpeg({ quality: 75, progressive: true });
     }
     
-    // Save to public/images/blog directory
-    const filePath = path.join(blogDirPath, filename);
+    // ذخیره فایل بهینه‌شده
+    await sharpInstance.toFile(filePath);
     
-    await writeFile(filePath, buffer);
+    // مسیر نسبی برای استفاده در URL
+    const relativePath = `/uploads/blog/${uploadType === 'thumbnail' ? 'thumbnails' : 'content'}/${filename}`;
     
-    console.log(`File saved to: ${filePath} (detected as ${detectedExtension})`);
-    
-    // Return the path that can be used in <Image> component
     return NextResponse.json({ 
       success: true, 
-      filePath: `/images/blog/${filename}`,
-      detectedType: detectedExtension
+      filePath: relativePath,
+      filename: filename
     });
     
   } catch (error) {
-    console.error('Error uploading file:', error);
+    console.error('خطا در آپلود فایل:', error);
     return NextResponse.json(
-      { error: 'Error uploading file' },
+      { success: false, error: 'خطا در پردازش درخواست' }, 
       { status: 500 }
     );
   }

@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { BlogPost } from '@/lib/types';
 import BlogIcon from './BlogIcon';
 
@@ -10,8 +11,19 @@ interface BlogCardProps {
 const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
   return (
     <article className="bg-white rounded-xl overflow-hidden shadow-md transition-transform hover:-translate-y-2">
-      <div className="h-52 relative bg-gradient-to-br from-yellow-50 to-yellow-100 flex items-center justify-center">
-        <BlogIcon category={post.category} size={64} className="opacity-50" />
+      <div className="h-52 relative">
+        {post.imagePath ? (
+          <Image
+            src={post.imagePath}
+            alt={post.title}
+            fill
+            className="object-cover"
+          />
+        ) : (
+          <div className="h-full bg-gradient-to-br from-yellow-50 to-yellow-100 flex items-center justify-center">
+            <BlogIcon category={post.category} size={64} className="opacity-50" />
+          </div>
+        )}
       </div>
       <div className="p-6">
         <div className="flex items-center gap-2 mb-2">

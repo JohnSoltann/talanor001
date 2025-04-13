@@ -2,13 +2,17 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { FaArrowLeft, FaSave, FaUpload } from 'react-icons/fa';
+import { FaArrowLeft, FaSave, FaUpload, FaSpinner } from 'react-icons/fa';
 import { toast } from 'react-hot-toast';
 import Link from 'next/link';
 import Image from 'next/image';
 import { blogAPI } from '@/lib/api';
 import { Category, CategoryInfo } from '@/lib/types';
 import { useBlogData } from '@/contexts/BlogDataContext';
+import ImageUploader from '@/components/ImageUploader';
+import ImageGallery from '@/components/ImageGallery';
+import QuillEditor from '@/components/QuillEditor';
+import 'quill/dist/quill.snow.css';
 
 export default function NewBlogPostPage() {
   const router = useRouter();
@@ -16,6 +20,8 @@ export default function NewBlogPostPage() {
   const [categories, setCategories] = useState<CategoryInfo[]>([]);
   const [loading, setLoading] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [showGallery, setShowGallery] = useState(false);
+  const [uploadingContentImage, setUploadingContentImage] = useState(false);
   
   // Form state
   const [formData, setFormData] = useState({
@@ -25,7 +31,7 @@ export default function NewBlogPostPage() {
     category: '' as Category,
     content: '',
     featured: false,
-    imagePath: '/images/blog/gold-hero.svg', // Default image path - updated to .svg
+    imagePath: '', // Remove default image path
     date: generatePersianDate(),
     author: 'تیم کارشناسان طلانوز',
     // SEO fields
@@ -131,6 +137,90 @@ export default function NewBlogPostPage() {
       } catch (error) {
         console.error('Error uploading image:', error);
         toast.error('خطا در آپلود تصویر', { id: 'upload' });
+      }
+    }
+  };
+  
+  // تابع آپلود تصویر برای ویرایشگر
+  function imageHandler() {
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+    input.click();
+
+    input.onchange = async () => {
+      const file = input.files?.[0];
+      if (file) {
+        try {
+          setUploadingContentImage(true);
+          
+          const formData = new FormData();
+          formData.append('file', file);
+          formData.append('uploadType', 'content');
+          
+          toast.loading('در حال آپلود تصویر...', { id: 'content-upload' });
+          
+          const response = await fetch('/api/upload', {
+            method: 'POST',
+            body: formData,
+          });
+          
+          if (!response.ok) {
+            throw new Error('خطا در آپلود تصویر');
+          }
+          
+          const data = await response.json();
+          
+          if (data.success) {
+            // اضافه کردن تصویر به ویرایشگر
+            const editor = document.querySelector('.ql-editor');
+            const range = window.getSelection()?.getRangeAt(0);
+            
+            // ایجاد تگ تصویر
+            const img = document.createElement('img');
+            img.src = data.filePath;
+            img.alt = 'تصویر آپلود شده';
+            img.style.maxWidth = '100%';
+            
+            // درج تصویر در محل مکان‌نما
+            if (range) {
+              range.deleteContents();
+              range.insertNode(img);
+            } else {
+              editor.appendChild(img);
+            }
+            
+            toast.success('تصویر با موفقیت اضافه شد', { id: 'content-upload' });
+          } else {
+            throw new Error(data.error || 'خطا در آپلود تصویر');
+          }
+        } catch (error) {
+          console.error('Error uploading content image:', error);
+          toast.error('خطا در آپلود تصویر', { id: 'content-upload' });
+        } finally {
+          setUploadingContentImage(false);
+        }
+      }
+    };
+  }
+
+  // تنظیمات ویرایشگر
+  const modules = {
+    clipboard: {
+      matchVisual: false,
+    },
+    toolbar: {
+      container: [
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+        ['blockquote', 'code-block'],
+        [{ 'align': [] }],
+        ['link', 'image'],
+        ['clean']
+      ],
+      handlers: {
+        'image': imageHandler
       }
     }
   };
@@ -253,43 +343,58 @@ export default function NewBlogPostPage() {
               </div>
             </div>
             
-            {/* Content section */}
-            <div>
-              <h2 className="text-xl font-semibold mb-4">محتوا</h2>
+            {/* تصویر شاخص */}
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2">تصویر شاخص</label>
               
-              <div className="mb-2 flex justify-end">
+              <div className="flex space-x-2 items-center mb-4">
                 <button
                   type="button"
-                  onClick={() => setShowPreview(!showPreview)}
-                  className="text-blue-600 hover:text-blue-800 text-sm underline"
+                  onClick={() => setShowGallery(!showGallery)}
+                  className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded"
                 >
-                  {showPreview ? 'نمایش ویرایشگر' : 'پیش‌نمایش محتوا'}
+                  {showGallery ? 'بستن گالری' : 'انتخاب از گالری'}
                 </button>
               </div>
               
-              {showPreview ? (
-                <div className="mb-4 border p-4 rounded-lg min-h-[300px] prose prose-sm max-w-none">
-                  <div dangerouslySetInnerHTML={{ __html: formData.content }} />
-                </div>
-              ) : (
-                <div className="mb-4">
-                  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="content">
-                    محتوای پست
-                  </label>
-                  <textarea
-                    id="content"
-                    name="content"
-                    value={formData.content}
-                    onChange={handleChange}
-                    rows={15}
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    required
+              {!showGallery && (
+                <ImageUploader 
+                  type="thumbnail"
+                  onImageUploaded={(filePath) => setFormData(prev => ({ ...prev, imagePath: filePath }))} 
+                />
+              )}
+              
+              {showGallery && (
+                <ImageGallery 
+                  type="thumbnail"
+                  onSelectImage={(url) => {
+                    setFormData(prev => ({ ...prev, imagePath: url }));
+                    setShowGallery(false);
+                    toast.success('تصویر انتخاب شد');
+                  }} 
+                />
+              )}
+              
+              {formData.imagePath && (
+                <div className="mt-4 relative w-full h-48 border rounded overflow-hidden">
+                  <Image
+                    src={formData.imagePath}
+                    alt="پیش‌نمایش تصویر"
+                    fill
+                    className="object-contain"
                   />
-                  <p className="text-sm text-gray-500 mt-1">
-                    می‌توانید از HTML برای قالب‌بندی متن استفاده کنید.
-                  </p>
                 </div>
               )}
+            </div>
+            
+            {/* محتوای مقاله */}
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2">محتوای مقاله</label>
+              <QuillEditor
+                value={formData.content}
+                onChange={(content) => setFormData(prev => ({ ...prev, content }))}
+                placeholder="محتوای مقاله را وارد کنید..."
+              />
             </div>
             
             {/* SEO section */}
@@ -402,47 +507,6 @@ export default function NewBlogPostPage() {
                 </label>
                 <p className="text-sm text-gray-500 mt-1">
                   پست‌های ویژه در صفحه‌ی اصلی بلاگ نمایش داده می‌شوند.
-                </p>
-              </div>
-            </div>
-            
-            {/* Featured image section */}
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h2 className="text-xl font-semibold mb-4">تصویر شاخص</h2>
-              
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
-                  تصویر فعلی
-                </label>
-                <div className="relative h-40 w-full overflow-hidden rounded-md">
-                  <Image
-                    src={previewImage || formData.imagePath}
-                    alt="تصویر شاخص"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-              
-              <div>
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="image">
-                  آپلود تصویر جدید
-                </label>
-                <label className="flex items-center justify-center w-full p-4 border-2 border-gray-300 border-dashed rounded-md cursor-pointer hover:bg-gray-50">
-                  <div className="flex flex-col items-center">
-                    <FaUpload className="text-gray-400 mb-2" />
-                    <span className="text-sm text-gray-500">انتخاب تصویر</span>
-                  </div>
-                  <input
-                    type="file"
-                    id="image"
-                    onChange={handleImageChange}
-                    className="hidden"
-                    accept="image/*"
-                  />
-                </label>
-                <p className="text-sm text-gray-500 mt-1">
-                  حداکثر 2 مگابایت، فرمت‌های JPEG، PNG
                 </p>
               </div>
             </div>
