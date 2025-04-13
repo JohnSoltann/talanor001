@@ -88,31 +88,35 @@ const GoldPriceWidget = () => {
 
   // Original return block for when data is available
   return (
-    <div className="w-full bg-amber-50 p-6">
+    <div className="w-full bg-gradient-to-b from-gold-200/80 to-gold-100/60 p-8 rounded-2xl shadow-lg backdrop-blur-sm">
       <div className="text-center mb-8">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-gray-600 bg-white/50 inline-block px-4 py-1 rounded-full shadow-sm">
           آخرین بروزرسانی: {formatPersianTime(lastUpdated)}
         </p>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {prices.map((price) => (
           <div 
             key={price.key || price.عنوان} 
-            className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow transition"
+            className="bg-gradient-to-br from-white to-gold-50 rounded-xl border border-gold-200/50 p-6 hover:shadow-lg transition-all duration-300 group"
           >
-            <div className="flex justify-between items-start mb-2">
-              <h3 className="font-bold text-gray-800">{price.عنوان}</h3>
-              <span className={`text-sm ${price.تغییر >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+            <div className="flex justify-between items-start mb-3">
+              <h3 className="font-bold text-gray-800 text-lg">{price.عنوان}</h3>
+              <span className={`text-sm font-medium px-3 py-1 rounded-full ${
+                price.تغییر >= 0 
+                ? 'bg-green-100 text-green-600' 
+                : 'bg-red-100 text-red-600'
+              }`}>
                 {price.تغییر > 0 ? '▲' : price.تغییر < 0 ? '▼' : '■'} {Math.abs(price.تغییر)}%
               </span>
             </div>
             
-            <div className="text-lg font-bold text-gray-900 mb-2">
+            <div className="text-2xl font-bold text-gray-900 mb-4 bg-white/70 p-3 rounded-lg shadow-sm group-hover:shadow-md transition-all duration-300">
               {formatNumber(parseInt(price.قیمت))} تومان
             </div>
             
-            <div className="flex justify-between text-sm text-gray-500">
+            <div className="flex justify-between text-sm text-gray-600 bg-gold-50/50 p-3 rounded-lg">
               <span>بیشترین: {formatNumber(parseInt(price.بیشترین))}</span>
               <span>کمترین: {formatNumber(parseInt(price.کمترین))}</span>
             </div>

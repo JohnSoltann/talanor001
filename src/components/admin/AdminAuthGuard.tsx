@@ -18,8 +18,8 @@ export default function AdminAuthGuard({
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   
-  // رمز عبور ادمین از متغیر محیطی
-  const ADMIN_PASSWORD = typeof window !== 'undefined' ? window.__NEXT_DATA__?.props?.env?.NEXT_PUBLIC_ADMIN_PASSWORD : process.env.NEXT_PUBLIC_ADMIN_PASSWORD;
+  // رمز عبور ادمین از متغیر محیطی - مستقیماً مقدار را قرار می‌دهیم برای تست
+  const ADMIN_PASSWORD = 'Tal@n0ur2024#Admin'; // استفاده مستقیم از مقدار پسورد
   
   useEffect(() => {
     // بررسی وجود متغیر محیطی
