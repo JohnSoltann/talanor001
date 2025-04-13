@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaChartLine, FaCoins, FaGlobe, FaBook, FaGem, FaCrown, FaRing, FaBracelet } from 'react-icons/fa';
+import { FaChartLine, FaCoins, FaGlobe, FaBook, FaGem, FaCrown, FaRing, FaLink } from 'react-icons/fa';
 
 interface BlogIconProps {
   category: string;
@@ -25,7 +25,7 @@ const BlogIcon: React.FC<BlogIconProps> = ({ category, size = 24, className = ''
       case 'rings':
         return <FaRing size={size} className={`text-yellow-500 ${className}`} />;
       case 'bracelets':
-        return <FaBracelet size={size} className={`text-yellow-500 ${className}`} />;
+        return <FaLink size={size} className={`text-yellow-500 ${className}`} />;
       default:
         return <FaGem size={size} className={`text-yellow-500 ${className}`} />;
     }
